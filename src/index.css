@@ -1,13 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  font-family: 'Poppins', 'sans-serif';
+  @apply dark:border-dark2 dark:divide-dark2
+}
+
+.hover-label {
+  @apply absolute bg-black/50 dark:bg-gray-400/80 p-2 text-white text-xs rounded
+  left-1/2 -translate-x-[50%] -bottom-12 opacity-0 
+  group-hover:opacity-100 duration-100 hidden md:flex
+}
+
+.navbar {
+  height: 64px;
+}
+
+.main-container {
+  max-height: calc(100vh - 64px)
+}
+
+@media(max-width: 768px) {
+  .navbar {
+    height: 48px;
+  }
+  .main-container,
+  .main-container {
+    max-height: calc(100vh - 48px)
+  }
+}
+
+.sidebar-link {
+  @apply py-2 md:py-4 flex flex-col space-y-1 md:space-y-2 items-center cursor-pointer
+  hover:bg-gray-50 dark:hover:bg-dark1
+}
+
+.sidebar-link-open {
+  @apply h-10 pl-[30.5px] flex items-center space-x-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-dark1
+}
+
+
+.navbar-modal-link {
+  @apply h-12 px-4 flex items-center space-x-3
+  hover:bg-gray-50 dark:hover:bg-dark1 duration-100
+}
+
+.notifications-link {
+  @apply p-4 flex items-start space-x-4
+  hover:bg-gray-50 dark:hover:bg-dark1 duration-100
+}
+
+.text-secondary {
+  @apply text-gray-500 dark:text-gray-400 placeholder:text-gray-500 dark:placeholder:text-gray-400
+}
+
+.comment-input {
+  position: relative;
+}
+
+.comment-input::before {
+  content: "";
+  position: absolute !important;
+  height: 1px !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: red !important;
+}
+
+/* SKELETON LOADING STATE */
+
+.animated-bg {
+  background-image: linear-gradient(to right, #f5f5f5 0%,
+  #eee 10%, #f5f5f5 20%, #f5f5f5 100%);
+  background-size: 200% 100%;
+  animation: bgPos 1s linear infinite;
+}
+
+.dark .animated-bg {
+  background-image: linear-gradient(to right, #2c2c2c 0%,
+  #333 10%, #2c2c2c 20%, #2c2c2c 100%);
+  background-size: 200% 100%;
+  animation: bgPos 1s linear infinite;
+}
+
+@keyframes bgPos {
+  0% {
+    background-position: 50% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
+}
+
+.material-symbols-outlined.md-18 { font-size: 18px; }
+.material-symbols-outlined.md-20 { font-size: 20px; }
+.material-symbols-outlined.md-22 { font-size: 22px; }
+.material-symbols-outlined.md-24 { font-size: 24px; }
+.material-symbols-outlined.md-28 { font-size: 28px; }
+.material-symbols-outlined.md-32 { font-size: 32px; }
+.material-symbols-outlined.md-36 { font-size: 36px; }
+.material-symbols-outlined.md-48 { font-size: 48px; }
+
+.controls span,
+.mobile-play-pause span {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+#miniplayer {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+#pause,
+#mobile-pause {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 200,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.volume-slider {
+  position: relative;
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: width 100ms ease;
+  height: 4px; 
+  background: rgba(255, 255, 255, 0.5); 
+  outline: none;
+}
+
+.volume-container:hover .volume-slider,
+.volume-slider:focus-within {
+  transform: scaleX(1);
+  width: 64px;
+}
+
+
+.volume-container:hover .volume-slider::-webkit-slider-thumb,
+.volume-slider:focus-within.volume-slider::-webkit-slider-thumb {
+  transform: scale(1);
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 16px; 
+  height: 16px; 
+  border-radius: 50%;
+  background: #fff; 
+  cursor: pointer; 
+  transform: scale(0);
+  transition: all 50ms ease;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 15px; 
+  height: 15px; 
+  border-radius: 50%;
+  background: #fff; 
+  cursor: pointer; 
+}
+
+.controls span {
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 150ms ease;
+}
+
+.controls span:hover {
+  color: #fff;
+}
+
+.timeline-container:hover .timeline {
+  height: 100%;
+  transition: all 150ms ease;
+}
+
+.timeline-container:hover .timeline-preview {
+  display: block;
+}
+
+.active, .person, .fill-1 {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.file-input::-webkit-file-upload-button {
+  background-color: #3b82f6;
+  border: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 8px 16px;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+
+.loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 1000ms infinite;      
+  animation: ellipsis steps(4,end) 1000ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  position: absolute;
+  bottom: 0;
+  margin-left: 0.5px;
+  width: 0;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 11px;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 11px;    
+  }
+}
+
+
+
+.scrubbing * {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.scrubbing *::selection {
+  background: transparent !important;
+}
+
+.blur-container {
+  display: none;
+}
+
+.scrubbing .blur-container {
+  display: block;
 }
