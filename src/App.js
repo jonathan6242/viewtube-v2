@@ -14,6 +14,11 @@ import CreateVideo from "./pages/CreateVideo";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ChannelPage from "./pages/ChannelPage";
+import Subscriptions from "./pages/Subscriptions";
+import LikedVideos from "./pages/LikedVideos";
+import SearchPage from "./pages/SearchPage";
+import EditVideo from "./pages/EditVideo";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const { setTheme } = useContext(ThemeContext)
@@ -100,15 +105,21 @@ function App() {
           <Sidebar />
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/subscriptions' element={<>Subscriptions</>} />
-            <Route path='/likedvideos' element={<>Liked videos</>} />
+            <Route path='/subscriptions' element={<Subscriptions />} />
+            <Route path='/likedvideos' element={<LikedVideos />} />
             <Route path='/video/:id' element={
               <VideoPageProvider>
                 <VideoPage />
               </VideoPageProvider>
             } />
-            <Route path='/createvideo' element={<CreateVideo />} />
+            <Route path='/createvideo' element={<PrivateRoute />}>
+              <Route path='/createvideo' element={<CreateVideo />} />
+            </Route>
             <Route path='/channel/:uid' element={<ChannelPage />} />
+            <Route path='/search' element={<SearchPage />} />
+            <Route path='/editvideo/:id' element={<PrivateRoute />}>
+              <Route path='/editvideo/:id' element={<EditVideo />} />
+            </Route>
           </Routes>
         </div>
         <ToastContainer />

@@ -24,6 +24,7 @@ function Home() {
 
   return (
   <div className="flex-1 overflow-y-scroll py-6 sm:px-6 main-container">
+    <div className="font-semibold text-lg mb-6 px-4 sm:px-0">Home</div>
     <div className="grid grid-cols-1 xs:grid-cols-2 3md:grid-cols-3 lg:grid-cols-4 gap-4 
     bg-white dark:bg-black">
       {

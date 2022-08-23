@@ -193,7 +193,7 @@ function Comment({ mobile, comment }) {
               text={replyText}
               setText={setReplyText}
               id={id}
-              commentID={comment?.id}
+              comment={comment}
               replies={replies}
             />
           )
@@ -237,7 +237,7 @@ function Comment({ mobile, comment }) {
                   replies?.map((reply, index) => (
                     <Reply
                       reply={reply}
-                      commentID={comment.id}
+                      comment={comment}
                       key={index}
                       replies={replies}
                     />
@@ -352,7 +352,7 @@ function Comment({ mobile, comment }) {
                             text={replyText}
                             setText={setReplyText}
                             id={id}
-                            commentID={comment?.id}
+                            comment={comment}
                             replies={replies}
                             inputRefMobile={inputRefMobile}
                           />
@@ -365,7 +365,7 @@ function Comment({ mobile, comment }) {
                       replies?.map((reply, index) => (
                         <Reply
                           reply={reply}
-                          commentID={comment.id}
+                          comment={comment}
                           key={index}
                           replies={replies}
                           mobile

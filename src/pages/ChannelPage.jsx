@@ -81,6 +81,19 @@ function ChannelPage() {
       await updateDoc(doc(db, "users", user?.uid), {
         subscriptions: arrayUnion(channel?.uid)
       })
+
+      // Notify author of new subscriber
+      await updateDoc(doc(db, "users", uid), {
+        notifications: arrayUnion({
+          content: '',
+          uid: user?.uid,
+          displayName: user?.displayName,
+          photoURL: user?.photoURL,
+          type: "subscription",
+          to: `/channel/${user?.uid}`,
+          dateCreated: Date.now()
+        })
+      })
     } else {
       toast.success('Subscription removed', {theme: 'colored'});
 
@@ -163,7 +176,7 @@ function ChannelPage() {
       </div>
       <div className="flex-1 md:px-8">
         {/* Title and Select Menu */}
-        <div className="flex justify-between pt-6 px-4 md:px-0 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between pt-6 px-4 md:px-0 max-w-7xl mx-auto">
           <div className="font-semibold text-lg">
             Uploads 
           </div>
@@ -242,7 +255,7 @@ function ChannelPage() {
           }
         </div>
         {/* Uploads - below 768px */}
-        <div className="grid grid-cols-1 md:hidden gap-1 py-6">
+        <div className="grid grid-cols-1 md:hidden gap-4 py-6">
           {
             channelVideos ? channelVideos
               .sort((a, b) => {

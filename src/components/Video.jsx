@@ -52,6 +52,8 @@ function Video({ src }) {
   }
 
   const togglePlay = (e) => {
+    if(e && (document.querySelector('.video-controls-container').contains(e?.target)
+    || e?.target.classList.contains('video-controls-container'))) return;
     const paused = videoRef.current?.paused
     paused ? videoRef.current?.play() : videoRef.current?.pause();
     paused ? setPlaying(true) : setPlaying(false);
@@ -244,6 +246,10 @@ function Video({ src }) {
         : 'video-container flex bg-cover bg-center bg-no-repeat bg-black group '}`}
         ref={videoContainerRef}
         draggable={false}
+        onClick={(e) => {
+          if(window.innerWidth > 767) togglePlay(e)
+          if(window.innerWidth < 768) setControlsOpen(!controlsOpen)
+        }}
       >
         <div className={`absolute bottom-0 top-0 md:top-auto inset-x-0 md:aspect-[6/1] 
         bg-[#00000040] md:bg-transparent z-10
@@ -261,7 +267,7 @@ function Video({ src }) {
           ${loading ? 'invisible' : 'visible'} duration-200 ease mobile-play-pause`}
           onClick={(e) => {
             e.stopPropagation();
-            togglePlay();
+            togglePlay(e);
           }}
         >
           <span 
@@ -322,7 +328,7 @@ function Video({ src }) {
               className="hidden md:flex items-center"
               onClick={(e) => {
                 e.stopPropagation();
-                togglePlay(e);
+                togglePlay();
               }}
               draggable={false}
             >
@@ -345,7 +351,10 @@ function Video({ src }) {
             {/* Volume */}
             <div className="volume-container hidden md:flex items-center space-x-3"
             draggable={false}>
-              <button onClick={() => {videoRef.current.muted = !videoRef.current.muted}}
+              <button onClick={(e) => {
+                e.stopPropagation();
+                videoRef.current.muted = !videoRef.current.muted
+              }}
               draggable={false}>
                 <span className="material-symbols-outlined text-3xl flex items-center"
                 draggable={false}>
@@ -387,7 +396,10 @@ function Video({ src }) {
             <button 
               className="text-white text-lg text-center tracking-widest w-16
               hidden md:flex md:justify-center"
-              onClick={changePlaybackRate}
+              onClick={(e) => {
+                e.stopPropagation();
+                changePlaybackRate(e);
+              }}
               ref={speedBtnRef}
               draggable={false}
             >
@@ -396,7 +408,10 @@ function Video({ src }) {
             {/* Miniplayer */}
             <button
               className="items-center hidden md:flex"
-              onClick={toggleMiniplayer}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMiniplayer(e);
+              }}
               draggable={false}
             >
               <span className="material-symbols-outlined text-4xl" id="miniplayer" 
@@ -455,16 +470,12 @@ function Video({ src }) {
         </div>          
         <video
           className={
-            `${videoRef?.current?.offsetWidth / videoRef?.current?.offsetHeight ? 'object-cover' 
+            `${videoRef?.current?.offsetWidth / videoRef?.current?.offsetHeight > 16/9 ? 'object-cover' 
             : 'object-contain'
-            }`
+            } mx-auto`
           }
           src={src}
           ref={videoRef}
-          onClick={() => {
-            if(window.innerWidth > 767) togglePlay()
-            if(window.innerWidth < 768) setControlsOpen(!controlsOpen)
-          }}
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
           onVolumeChange={() => {

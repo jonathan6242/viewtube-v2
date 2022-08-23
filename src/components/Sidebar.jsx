@@ -65,6 +65,7 @@ function Sidebar() {
           to='/'
           icon='home'
           open
+          closeSidebar
         >
           Home
         </SidebarLink>
@@ -72,6 +73,7 @@ function Sidebar() {
           to='/subscriptions'
           icon='subscriptions'
           open
+          closeSidebar
         >
           Subscriptions
         </SidebarLink>
@@ -79,6 +81,7 @@ function Sidebar() {
           to='/likedvideos'
           icon='thumb_up'
           open
+          closeSidebar
         >
           Liked videos
         </SidebarLink>

@@ -197,6 +197,19 @@ function VideoPage() {
       await updateDoc(doc(db, "users", user?.uid), {
         subscriptions: arrayUnion(video?.uid)
       })
+
+      // Notify author of new subscriber
+      await updateDoc(doc(db, "users", video?.uid), {
+        notifications: arrayUnion({
+          content: '',
+          uid: user?.uid,
+          displayName: user?.displayName,
+          photoURL: user?.photoURL,
+          type: "subscription",
+          to: `/channel/${user?.uid}`,
+          dateCreated: Date.now()
+        })
+      })
     } else {
       toast.success('Subscription removed', {theme: 'colored'});
 
@@ -212,6 +225,16 @@ function VideoPage() {
         subscriptions: arrayRemove(video?.uid)
       })
     }
+  }
+
+  const likeToDislikeRatio = (likes, dislikes) => {
+    if(likes?.length === 0 && dislikes?.length === 0) {
+      return 50;
+    }
+    if(dislikes?.length === 0) {
+      return 100;
+    }
+    return (likes?.length / (likes?.length + dislikes?.length)) * 100
   }
 
   return (
@@ -280,8 +303,16 @@ function VideoPage() {
                               {dislikes?.length}
                             </span>
                           </div>
-                          <div className="absolute -bottom-5 inset-x-0 h-[2px] 
-                          bg-black dark:bg-white">
+                          <div 
+                            className="absolute -bottom-5 left-0 h-[2px] 
+                            bg-black dark:bg-white duration-100 ease"
+                            style={{
+                              width: `${likeToDislikeRatio(likes, dislikes)}%`
+                            }}
+                          >
+                          </div>
+                          <div className="absolute -bottom-5 left-0 w-full h-[2px] 
+                          bg-black/30 dark:bg-white/40">
                           </div>
                         </div>
                       </div>
@@ -340,15 +371,22 @@ function VideoPage() {
                         </div>
                       </div>
                       {
-                        video?.uid !== user?.uid && (
-                        <button 
-                          className={`py-2 px-4 uppercase font-medium rounded text-sm md:text-base
-                          ${!subscribedByUser ? 'bg-red-500 text-white' : 'bg-gray-300 dark:bg-dark2 opacity-70'}`}
-                          onClick={toggleSubscribe}
-                        >
-                          { !subscribedByUser ? 'Subscribe' : 'Unsubscribe'}
-                        </button>
-                        )
+                        video?.uid !== user?.uid && !infoLoading ? (
+                          <button 
+                            className={`py-2 px-4 uppercase font-medium rounded text-sm md:text-base
+                            ${!subscribedByUser ? 'bg-red-500 text-white' : 'bg-gray-300 dark:bg-dark2 opacity-70'}`}
+                            onClick={toggleSubscribe}
+                          >
+                            { !subscribedByUser ? 'Subscribe' : 'Unsubscribe'}
+                          </button>
+                        ) : !infoLoading ? (
+                          <Link
+                            to={`/editvideo/${video?.id}`}
+                            className="py-2 px-4 uppercase font-medium rounded text-sm md:text-base bg-blue-400 text-white"
+                          >
+                            Edit video
+                          </Link>
+                        ) : (<></>)
                       }
 
                     </div>
@@ -409,7 +447,7 @@ function VideoPage() {
                         </div>
                       </div>
                       {
-                        video?.uid !== user?.uid && !infoLoading && (
+                        video?.uid !== user?.uid && !infoLoading ? (
                           <button 
                           className={`py-2 px-4 uppercase font-medium rounded text-sm md:text-base
                           ${!subscribedByUser ? 'bg-red-500 text-white' : 'bg-gray-300 dark:bg-dark2 opacity-70'}`}
@@ -417,7 +455,14 @@ function VideoPage() {
                         >
                           { !subscribedByUser ? 'Subscribe' : 'Unsubscribe'}
                         </button>
-                        )
+                        ) : !infoLoading ? (
+                          <Link
+                            to={`/editvideo/${video?.id}`}
+                            className="py-2 px-4 uppercase font-medium rounded text-sm md:text-base bg-blue-400 text-white"
+                          >
+                            Edit video
+                          </Link>
+                        ) : (<></>)
                       }
 
                     </div>
@@ -492,6 +537,7 @@ function VideoPage() {
                       text={commentText}
                       setText={setCommentText}
                       id={id}
+                      videoUID={video?.uid}
                     />
                     {
                       comments?.map(comment => (
@@ -608,6 +654,7 @@ function VideoPage() {
               mobile
               text={commentText}
               setText={setCommentText}
+              videoUID={video?.uid}
             />
           </div>
           <div className="py-3">

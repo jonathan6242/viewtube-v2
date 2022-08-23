@@ -6,7 +6,7 @@ import { db } from "../firebase";
 import useAuthUser from "../hooks/useAuthUser";
 import CommentInput from "./CommentInput";
 
-function Reply({ mobile, inputRefMobile, reply, commentID, replies, setText }) {
+function Reply({ mobile, inputRefMobile, reply, comment, replies, setText }) {
   const [replyInputOpen, setReplyInputOpen] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [likes, setLikes] = useState(reply?.likes);
@@ -31,7 +31,7 @@ function Reply({ mobile, inputRefMobile, reply, commentID, replies, setText }) {
       setLikes([...likes, user?.uid])
 
       // Update likes in Firestore
-      await updateDoc(doc(db, "videos", id, "comments", commentID, "replies", reply?.id), {
+      await updateDoc(doc(db, "videos", id, "comments", comment.id, "replies", reply?.id), {
         likes: arrayUnion(user?.uid)
       })
     } else {
@@ -39,14 +39,14 @@ function Reply({ mobile, inputRefMobile, reply, commentID, replies, setText }) {
       setLikes(likes.filter(uid => uid !== user?.uid));
 
       // Update likes in Firestore
-      await updateDoc(doc(db, "videos", id, "comments", commentID, "replies", reply?.id), {
+      await updateDoc(doc(db, "videos", id, "comments", comment.id, "replies", reply?.id), {
         likes: arrayRemove(user?.uid)
       })
     }
 
     if(disliked) {
       // Update dislikes in Firestore
-      await updateDoc(doc(db, "videos", id, "comments", commentID, "replies", reply?.id), {
+      await updateDoc(doc(db, "videos", id, "comments", comment.id, "replies", reply?.id), {
         dislikes: arrayRemove(user?.uid)
       })
     }
@@ -66,7 +66,7 @@ function Reply({ mobile, inputRefMobile, reply, commentID, replies, setText }) {
       setDislikes([...dislikes, user?.uid])
 
       // Update dislikes in Firestore
-      await updateDoc(doc(db, "videos", id, "comments", commentID, "replies", reply?.id), {
+      await updateDoc(doc(db, "videos", id, "comments", comment.id, "replies", reply?.id), {
         dislikes: arrayUnion(user?.uid)
       })
     } else {
@@ -74,14 +74,14 @@ function Reply({ mobile, inputRefMobile, reply, commentID, replies, setText }) {
       setDislikes(dislikes.filter(uid => uid !== user?.uid));
 
       // Update dislikes in Firestore
-      await updateDoc(doc(db, "videos", id, "comments", commentID, "replies", reply?.id), {
+      await updateDoc(doc(db, "videos", id, "comments", comment.id, "replies", reply?.id), {
         dislikes: arrayRemove(user?.uid)
       })
     }
 
     if(liked) {
       // Update likes in Firestore
-      await updateDoc(doc(db, "videos", id, "comments", commentID, "replies", reply?.id), {
+      await updateDoc(doc(db, "videos", id, "comments", comment.id, "replies", reply?.id), {
         likes: arrayRemove(user?.uid)
       })
     }
@@ -164,7 +164,7 @@ function Reply({ mobile, inputRefMobile, reply, commentID, replies, setText }) {
                 replyInputOpen={replyInputOpen}
                 text={replyText}
                 setText={setReplyText}
-                commentID={commentID}
+                comment={comment}
                 replies={replies}
               />
             )

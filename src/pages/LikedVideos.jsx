@@ -4,52 +4,44 @@ import Thumbnail from "../components/Thumbnail";
 import ThumbnailSkeleton from "../components/ThumbnailSkeleton";
 import { db } from "../firebase";
 import useAuthUser from "../hooks/useAuthUser";
-import useFirestoreUser from "../hooks/useFirestoreUser"
 import { signin } from "../services";
-import UndrawSubscriptions from "../assets/undrawsubscriptions.svg"
+import UndrawLiked from "../assets/undrawliked.svg"
 
-function Subscriptions() {
-  const { firestoreUser, loading: firestoreLoading } = useFirestoreUser();
-  const { user, loading: authLoading } = useAuthUser();
+function LikedVideos() {
+  const { user, loading } = useAuthUser();
   const [videos, setVideos] = useState(null);
-  const loading = firestoreLoading || authLoading;
 
   useEffect(() => {
     if(!loading) {
-      if(firestoreUser) {
-        if(firestoreUser?.subscriptions?.length > 0) {
-          return onSnapshot(
-            query(
-              collection(db, "videos"),
-              where('uid', 'in', firestoreUser?.subscriptions)
-            ),
-            (snapshot) => {
-              setVideos(snapshot.docs
-                .map(doc => ({...doc.data(), id: doc.id}))
-                .sort((a, b) => b.dateCreated - a.dateCreated)
-              );
-              console.log(snapshot.docs
-                .map(doc => ({...doc.data(), id: doc.id}))
-                .sort((a, b) => b.dateCreated - a.dateCreated))
-            }
-          )
-        } else {
-          setVideos([]);
-        }
+      if(user) {
+        return onSnapshot(
+          query(
+            collection(db, "videos"),
+            where('likes', 'array-contains', user?.uid)
+          ),
+          (snapshot) => {
+            setVideos(snapshot.docs
+              .map(doc => ({...doc.data(), id: doc.id}))
+              .sort((a, b) => b.dateCreated - a.dateCreated)
+            );
+          }
+        )
       } else {
-        setVideos([]);
+        setVideos([])
       }
     } else {
-      setVideos(null);
+      setVideos(null)
     }
-  }, [loading, firestoreUser])
+  }, [user, loading])
 
   return (
     <div className="flex-1 overflow-y-scroll py-6 sm:px-6 main-container">
       {
         user && !loading && (
           <>
-            <div className="font-semibold text-lg mb-6 px-4 sm:px-0">Subscriptions</div>
+            <div className="font-semibold text-lg mb-6 px-4 sm:px-0">
+              Liked videos
+            </div>
             <div className="grid grid-cols-1 xs:grid-cols-2 3md:grid-cols-3 lg:grid-cols-4 gap-4 
             bg-white dark:bg-black">
               {
@@ -74,13 +66,13 @@ function Subscriptions() {
           <div className="p-4 pb-6 flex flex-col items-center space-y-12">
             <img 
               className="w-48"
-              src={UndrawSubscriptions}
+              src={UndrawLiked}
               alt=""
             />
             <div className="flex flex-col items-center text-center space-y-4">
-              <div className="font-semibold text-lg">Don't miss new videos</div>
+              <div className="font-semibold text-lg">Enjoy your favourite videos</div>
               <div className="text-gray-400 max-w-md">
-                Sign in to see updates from your favourite ViewTube channels.
+                Sign in to access videos you've liked.
               </div>
               <button 
                 className="flex items-center p-[6px] px-4 border bg-blue-400 border-blue-400 space-x-1 font-medium rounded text-white"
@@ -100,4 +92,4 @@ function Subscriptions() {
     </div>
   )
 }
-export default Subscriptions
+export default LikedVideos

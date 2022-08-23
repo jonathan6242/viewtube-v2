@@ -1,10 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import ModalContext from "../context/ModalContext"
 import NavbarModal from "./NavbarModal"
 import Notifications from "./Notifications"
 import { signin } from "../services" 
 import useAuthUser from "../hooks/useAuthUser"
+import { doc, onSnapshot } from "firebase/firestore"
+import { db } from "../firebase"
 
 function Navbar() {
   const { 
@@ -13,8 +15,27 @@ function Navbar() {
     mobileSearchOpen, setMobileSearchOpen,
     notificationsOpen, setNotificationsOpen 
   } = useContext(ModalContext)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [notifications, setNotifications] = useState([]);
+
   const mobileInputRef = useRef();
   const { user, loading } = useAuthUser();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if(user) {
+      return onSnapshot(
+        doc(db, "users", user?.uid),
+        (snapshot) => {
+          const firestoreUser = {...snapshot.data()}
+          setNotifications(firestoreUser.notifications.sort((a, b) => b.dateCreated - a.dateCreated));
+        }
+      )
+    } else {
+      setNotifications([])
+    }
+  }, [user])
 
   useEffect(() => {
     if(mobileSearchOpen) {
@@ -22,12 +43,30 @@ function Navbar() {
     }
   }, [mobileSearchOpen])
 
+  const onSearch = (e) => {
+    e.preventDefault();
+    navigate({
+      pathname: '/search',
+      search: `?term=${searchTerm}`
+    })
+  }
+
+  useEffect(() => {
+    if(!location.pathname.includes('search')) {
+      setSearchTerm('');
+      setMobileSearchOpen(false)
+    }
+  }, [location.pathname])
+
   return (
     <div className="navbar px-3 md:px-6 flex justify-between items-center border-b md:space-x-12
     bg-white dark:bg-black">
       {
         mobileSearchOpen ? (
-          <div className="flex-1 flex items-center space-x-4">
+          <form 
+            className="flex-1 flex items-center space-x-4"
+            onSubmit={onSearch}
+          >
             <span 
               className="material-symbols-outlined cursor-pointer opacity-75"
               onClick={() => setMobileSearchOpen(false)}
@@ -39,8 +78,10 @@ function Navbar() {
               className="flex-1 py-1 outline-none dark:bg-black"
               placeholder="Search ViewTube"
               ref={mobileInputRef}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+          </form>
         ) : (
           <>
             {/* Hamburger & Logo */}
@@ -61,12 +102,17 @@ function Navbar() {
               </Link>
             </div>
             {/* Searchbar */}
-            <form className="flex-1 hidden md:flex max-w-2xl border divide-x rounded">
+            <form 
+              className="flex-1 hidden md:flex max-w-2xl border divide-x rounded"
+              onSubmit={onSearch}
+            >
               <input 
                 type="text"
                 placeholder="Search"
                 className="p-2 px-3 outline-1 outline flex-1 rounded-l outline-transparent focus:outline-gray-400 dark:focus:outline-blue-500 z-10
                 dark:bg-black"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button
                 type="button"
@@ -130,7 +176,11 @@ function Navbar() {
                             </div>
                           </div>
                           {/* Modal */}
-                          <Notifications signedIn={user} />
+                          <Notifications 
+                            notifications={notifications}
+                            setNotifications={setNotifications}
+                            signedIn={user}
+                          />
                         </div>
                         <button 
                           className="group relative md:hidden flex items-center"
@@ -169,19 +219,33 @@ function Navbar() {
                         </Link>
                         <div className="relative">
                           <div className="group cursor-pointer flex items-center">
-                            <span 
-                              className="material-icons-outlined notifications-toggle text-2xl
+                            <div 
+                              className="relative material-icons-outlined notifications-toggle text-2xl
                               select-none"
                               onClick={() => setNotificationsOpen(!notificationsOpen)}
                             >
                               notifications
-                            </span>
+                              {
+                                notifications?.length > 0 && (
+                                  <div 
+                                    className="absolute top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex justify-center items-center font-semibold"
+                                  >
+                                    {notifications?.length}
+                                  </div>
+                                )
+                              }
+
+                            </div>
                             <div className="hover-label">
                               Notifications
                             </div>
                           </div>
                           {/* Modal */}
-                          <Notifications />
+                          <Notifications 
+                            notifications={notifications}
+                            setNotifications={setNotifications}
+                            signedIn={user}
+                          />
                         </div>
                         <button 
                           className="group relative md:hidden flex items-center"

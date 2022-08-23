@@ -5,7 +5,7 @@ import { db } from "../firebase";
 import useAuthUser from "../hooks/useAuthUser";
 
 function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile, 
-  text, setText, commentID, replies }) {
+  text, setText, comment, replies, videoUID }) {
   const [active, setActive] = useState(false);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef();
@@ -25,6 +25,19 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
     if(text.trim() === '') return 
     setText('');
     setActive(false);
+
+    await updateDoc(doc(db, "users", videoUID), {
+      notifications: arrayUnion({
+        content: text,
+        uid: user?.uid,
+        displayName: user?.displayName,
+        photoURL: user?.photoURL,
+        type: "comment",
+        to: `/video/${id}`,
+        dateCreated: Date.now()
+      })
+    })
+
     await addDoc(collection(db, "videos", id, "comments"), {
       likes: [],
       dislikes: [],
@@ -49,13 +62,62 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
           uid: reply?.uid,
           displayName: name
         }
-        console.log('Mentions:', mentions)
         break;
       }
     }
-
+    
     setText('');
     setReplyInputOpen(false);
+
+    // If reply does not mention anyone, notify everyone in the replies + the comment author
+    if(!mentions) {
+      let added = [];
+      for(let reply of replies) {
+        if(!added.includes(reply?.uid)) {
+          added.push(reply?.uid)
+          await updateDoc(doc(db, "users", reply?.uid), {
+            notifications: arrayUnion({
+              content: text,
+              uid: user?.uid,
+              displayName: user?.displayName,
+              photoURL: user?.photoURL,
+              type: "reply",
+              to: `/video/${id}`,
+              dateCreated: Date.now()
+            })
+          })
+        }
+      }
+      if(!added.includes(comment?.uid)) {
+        await updateDoc(doc(db, "users", comment?.uid), {
+          notifications: arrayUnion({
+            content: text,
+            uid: user?.uid,
+            displayName: user?.displayName,
+            photoURL: user?.photoURL,
+            type: "reply",
+            to: `/video/${id}`,
+            dateCreated: Date.now()
+          })
+        })
+      }
+    }
+
+    // If reply mentions someone, notify them
+    if(mentions) {
+      await updateDoc(doc(db, "users", mentions.uid), {
+        notifications: arrayUnion({
+          content: text,
+          uid: user?.uid,
+          displayName: user?.displayName,
+          photoURL: user?.photoURL,
+          type: "reply",
+          to: `/video/${id}`,
+          dateCreated: Date.now()
+        })
+      })
+    }
+
     const replyObject = {
       likes: [],
       dislikes: [],
@@ -70,9 +132,11 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
     }
 
     await addDoc(
-      collection(db, "videos", id, "comments", commentID, "replies"),
+      collection(db, "videos", id, "comments", comment.id, "replies"),
       replyObject
     )
+
+
   }
 
   // Desktop

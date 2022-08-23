@@ -1,24 +1,46 @@
-import { addDoc, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from 'uuid'
 import { db, storage } from "../firebase";
 import useAuthUser from "../hooks/useAuthUser";
 import useFirestoreUser from "../hooks/useFirestoreUser";
 
-function CreateVideo() {
+function EditVideo() {
   const thumbnailRef = useRef();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [thumbnail, setThumbnail] = useState('');
+  const [oldThumbnail, setOldThumbnail] = useState('');
   const [video, setVideo] = useState('');
+  const [oldVideo, setOldVideo] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const { user } = useAuthUser();
-  const { firestoreUser } = useFirestoreUser();
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function getVideo() {
+      setLoading(true);
+      const docSnap = await getDoc(doc(db, "videos", id));
+      const video = {...docSnap.data(), id: docSnap.id}
+
+      setTitle(video?.title);
+      setDescription(video?.description);
+
+      setThumbnail(video?.thumbnail);
+      setOldThumbnail(video?.thumbnail)
+
+      setVideo(video?.video)
+      setOldVideo(video?.video)
+
+      setLoading(false);
+    }
+    getVideo();
+  }, [])
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -42,48 +64,56 @@ function CreateVideo() {
           }
         })
       }
-      // Upload thumbnail to Storage
-      setLoadingMessage('Uploading thumbnail');
-      const thumbnailURL = await storeFile(thumbnail);
-      // Upload video to Storage
-      setLoadingMessage('Uploading video');
-      const videoURL = await storeFile(video);
-      // Add video to Firestore
-      const docSnap = await addDoc(collection(db, "videos"), {
-        dateCreated: Date.now(),
-        views: 0,
-        likes: [],
-        dislikes: [],
+
+      let thumbnailURL;
+      if(thumbnail === oldThumbnail) {
+        thumbnailURL = thumbnail;
+      } else {
+        // Upload thumbnail to Storage
+        setLoadingMessage('Uploading thumbnail');
+        thumbnailURL = await storeFile(thumbnail);
+        console.log('New thumbnail')
+      }
+
+      let videoURL
+      if(video === oldVideo) {
+        videoURL = video;
+      } else {
+        // Upload video to Storage
+        setLoadingMessage('Uploading video');
+        videoURL = await storeFile(video);
+        console.log('New video')
+      }
+
+      // Update video in Firestore
+      await updateDoc(doc(db, "videos", id), {
         thumbnail: thumbnailURL,
         video: videoURL,
-        title: title || '',
-        description: description || '',
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        uid: user.uid
+        title,
+        description
       })
-
-      // Update subscribers' notifications
-      for (let uid of firestoreUser?.subscribers) {
-        await updateDoc(doc(db, "users", uid), {
-          notifications: arrayUnion({
-            content: title,
-            uid: user.uid,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            type: "upload",
-            to: `/video/${docSnap.id}`,
-            dateCreated: Date.now()
-          })
-        })
-      }
 
       setLoadingMessage('');
       setLoading(false);
-      navigate('/')
-      toast.success('Successfully created video.', {theme: 'colored'})
+      navigate(`/video/${id}`)
+      toast.success('Changes saved.', {theme: 'colored'})
     } catch (error) {
-      toast.error('Could not create video.', {theme: 'colored'})
+      toast.error('Could not save changes.', {theme: 'colored'})
+      console.log(error)
+      setLoading(false);
+    }
+    
+  }
+
+  const deleteVideo = async () => {
+    setLoading(true);
+    try {
+      await deleteDoc(doc(db, "videos", id))
+      toast.success('Successfully deleted video.', {theme: 'colored'})
+      setLoading(false);
+      navigate('/')
+    } catch (error) {
+      toast.error('Could not delete video.', {theme: 'colored'})
       setLoading(false);
     }
     
@@ -123,7 +153,7 @@ function CreateVideo() {
       overflow-y-scroll main-container"
       onSubmit={onSubmit}
     >
-      <div className="text-2xl font-semibold mb-6">Create Video</div>
+      <div className="text-2xl font-semibold mb-6">Edit Video</div>
       <div className="text-lg font-semibold mb-2">Title</div>
       <textarea
         value={title}
@@ -155,7 +185,6 @@ function CreateVideo() {
         className="hidden"
         ref={thumbnailRef}
         onChange={addThumbnail}
-        required
       />
       {
         thumbnail && (
@@ -174,7 +203,6 @@ function CreateVideo() {
           accept="video/*"
           className="file-input"
           onChange={addVideo}
-          required
         />
       </div>
       {
@@ -192,7 +220,7 @@ function CreateVideo() {
               src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
             ></img>
           ) 
-          : <span>Create video</span>
+          : <span>Edit video</span>
         }
       </button>
       {/* Loading Message */}
@@ -205,8 +233,24 @@ function CreateVideo() {
           </div>
         )
       }
-
+      <button
+        type="button"
+        className={`text-white bg-red-500 max-w-md font-semibold uppercase 
+        py-2 px-4 mt-6 flex items-center justify-center
+        ${loading ? 'bg-opacity-75 pointer-events-none' : 'bg-opacity-100 pointer-events-auto'}`}
+        onClick={deleteVideo}
+      >
+        {
+          loading ? (
+            <img
+              className="w-6 h-6"
+              src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
+            ></img>
+          ) 
+          : <span>Delete video</span>
+        }
+      </button>
     </form>
   )
 }
-export default CreateVideo
+export default EditVideo

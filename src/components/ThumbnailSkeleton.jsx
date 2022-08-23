@@ -1,4 +1,20 @@
-function ThumbnailSkeleton({ recommended, noProfile }) {
+function ThumbnailSkeleton({ recommended, noProfile, search }) {
+    // Search video thumbnail
+    if(search) {
+      return (
+        <div className="flex space-x-3 md:space-x-4 cursor-pointer">
+          <div 
+            className="flex-1 aspect-[16/9] animated-bg max-w-[180px] 
+            md:max-w-[360px] flex-shrink-0"
+          ></div>
+          <div className="flex-1 flex flex-col pr-2 md:pr-0 md:min-w-[340px] space-y-2 md:space-y-3">
+            <div className="animated-bg h-6 md:h-10"></div>
+            <div className="animated-bg h-4 md:h-6 md:w-40"></div>
+          </div>
+        </div>
+      )
+    }
+
   if(recommended) {
     return (
       <div 

@@ -14,7 +14,8 @@ export const signin = async () => {
       email: user.email,
       uid: user.uid,
       subscribers: [],
-      subscriptions: []
+      subscriptions: [],
+      notifications: []
     })
   } else {
     // If user is already in database (existing account)
