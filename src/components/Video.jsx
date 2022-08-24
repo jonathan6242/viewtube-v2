@@ -444,7 +444,7 @@ function Video({ src }) {
               </span>
             </button>
             {/* Fullscreen (Mobile) */}
-            <button 
+            {/* <button 
               onClick={(e) => {
                 e.stopPropagation();
                 toggleFullscreen();
@@ -465,7 +465,7 @@ function Video({ src }) {
               >
                 fullscreen_exit
               </span>
-            </button>
+            </button> */}
           </div>
         </div>          
         <video
@@ -496,11 +496,17 @@ function Video({ src }) {
             const video = videoRef?.current
             setProgressPosition(video.currentTime / video.duration)
           }}
-          onLoadedData={() => {
+          preload="metadata"
+          onLoadedMetadata={() => {
             const video = videoRef?.current
             setLoading(false);
 
           }}
+          // onLoadedData={() => {
+          //   const video = videoRef?.current
+          //   setLoading(false);
+
+          // }}
           draggable={false}
         ></video>
       </div>

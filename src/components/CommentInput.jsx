@@ -146,13 +146,25 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
         {
           !reply ? (
             <div className="flex items-start mb-8 space-x-4">
-              <div 
-                className="mt-1 w-10 h-10 rounded-full bg-cover bg-center bg-no-repeat flex-shrink-0 md:w-12 md:h-12 md:mt-0"
-                style={{
-                  backgroundImage: `url(${user?.photoURL})`
-                }}
-              >
-              </div>
+              {
+                user ? (
+                  <div 
+                    className="mt-1 w-10 h-10 rounded-full bg-cover bg-center bg-no-repeat flex-shrink-0 md:w-12 md:h-12 md:mt-0"
+                    style={{
+                      backgroundImage: `url(${user?.photoURL})`
+                    }}
+                  >
+                  </div>
+                ) : (
+                  <div
+                    className="mt-1 rounded-full material-symbols-outlined fill-1 text-[40px]
+                    flex-shrink-0 md:mt-0 md:text-[48px] flex justify-center items-center"
+                  >
+                    account_circle
+                  </div>
+                )
+              }
+
               <form
                 className="flex-1 flex flex-col"
                 onSubmit={onSubmitComment}
@@ -203,12 +215,24 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
             </div>
           ) : (
             <div className="flex items-start space-x-4 mt-1">
-              <div 
-                className="w-8 h-8 rounded-full bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${user?.photoURL})`
-                }}
-              ></div>
+              {
+                user ? (
+                  <div 
+                    className="w-8 h-8 rounded-full bg-cover bg-center bg-no-repeat"
+                    style={{
+                      backgroundImage: `url(${user?.photoURL})`
+                    }}
+                  ></div>
+                ) : (
+                  <div
+                    className="material-symbols-outlined fill-1 text-[32px] flex justify-center items-center"
+                  >
+                    account_circle
+                  </div>
+                )
+              }
+
+
               <form 
                 className="flex-1 flex flex-col justify-start"
                 onSubmit={onSubmitReply}
@@ -264,14 +288,23 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
   return (
     <form onSubmit={reply ? onSubmitReply : onSubmitComment}>
       <div className="flex mb-0 space-x-2">
-        <div 
-          className="w-10 h-10 rounded-full bg-cover bg-center bg-no-repeat flex-shrink-0
-          md:w-12 md:h-12 md:mt-0"
-          style={{
-            backgroundImage: `url(${user?.photoURL})`
-          }}
-        >
-        </div>
+        {
+          user ? (
+            <div 
+              className="w-10 h-10 rounded-full bg-cover bg-center bg-no-repeat flex-shrink-0
+              md:w-12 md:h-12"
+              style={{
+                backgroundImage: `url(${user?.photoURL})`
+              }}
+            ></div>
+          ) : (
+            <div
+              className="material-symbols-outlined fill-1 text-[40px] flex-shrink-0 md:text-[48px] flex justify-center items-center"
+            >
+              account_circle
+            </div>
+          )
+        }
         <div className="flex-1">
           <input 
             type="text"

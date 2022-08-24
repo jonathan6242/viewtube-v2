@@ -120,7 +120,7 @@ function Navbar() {
                 hover:bg-gray-100 duration-100 dark:bg-dark1 dark:hover:bg-dark1
                 group relative"
               >
-                <span className="material-icons-outlined text-2xl">
+                <span className="material-symbols-outlined text-2xl">
                   search
                 </span>
                 <div className="hover-label">Search</div>
@@ -166,7 +166,7 @@ function Navbar() {
                         <div className="relative md:hidden">
                           <div className="group cursor-pointer flex items-center">
                             <span 
-                              className="material-icons-outlined notifications-toggle text-2xl"
+                              className="material-symbols-outlined notifications-toggle text-2xl"
                               onClick={() => setNotificationsOpen(!notificationsOpen)}
                             >
                               notifications
@@ -186,7 +186,7 @@ function Navbar() {
                           className="group relative md:hidden flex items-center"
                           onClick={() => setMobileSearchOpen(true)}
                         >
-                          <span className="material-icons-outlined text-2xl">
+                          <span className="material-symbols-outlined text-2xl">
                             search
                           </span>
                         </button>
@@ -220,7 +220,7 @@ function Navbar() {
                         <div className="relative">
                           <div className="group cursor-pointer flex items-center">
                             <div 
-                              className="relative material-icons-outlined notifications-toggle text-2xl
+                              className="relative material-symbols-outlined notifications-toggle text-2xl
                               select-none"
                               onClick={() => setNotificationsOpen(!notificationsOpen)}
                             >
@@ -251,7 +251,7 @@ function Navbar() {
                           className="group relative md:hidden flex items-center"
                           onClick={() => setMobileSearchOpen(true)}
                         >
-                          <span className="material-icons-outlined text-2xl">
+                          <span className="material-symbols-outlined text-2xl">
                             search
                           </span>
                         </button>
