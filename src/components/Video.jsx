@@ -470,10 +470,11 @@ function Video({ src }) {
         </div>          
         <video
           className={
-            `${videoRef?.current?.offsetWidth / videoRef?.current?.offsetHeight > 16/9 ? 'object-cover' 
-            : 'object-contain'
-            } mx-auto`
+            `absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2`
           }
+          style={{
+            height: `${videoContainerRef?.current?.clientHeight}px`
+          }}
           src={src}
           ref={videoRef}
           onPlay={() => setPlaying(true)}
