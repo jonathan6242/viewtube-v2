@@ -1,6 +1,7 @@
 import { addDoc, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { db } from "../firebase";
 import useAuthUser from "../hooks/useAuthUser";
 
@@ -22,6 +23,10 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
 
   const onSubmitComment = async (e) => {
     e.preventDefault();
+    if(!user) {
+      toast.info('Sign in to comment.', { theme: 'colored' });
+      return;
+    }
     if(text.trim() === '') return 
     setText('');
     setActive(false);
@@ -51,6 +56,10 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
 
   const onSubmitReply = async (e) => {
     e.preventDefault();
+    if(!user) {
+      toast.info('Sign in to reply.', { theme: 'colored' });
+      return;
+    }
     if(text.trim() === '') return 
     let mentions;
 

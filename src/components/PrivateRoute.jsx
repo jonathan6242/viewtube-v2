@@ -10,9 +10,9 @@ function PrivateRoute() {
   // useEffect(() => {
   //   if(!loading && !user) {
   //     if(location.pathname.includes('create')) {
-  //       toast.info('Must sign in to create videos.', {theme: 'colored'})
+  //       toast.info('Sign in to create videos.', {theme: 'colored'})
   //     } else {
-  //       toast.info('Must sign in to edit videos.', {theme: 'colored'})
+  //       toast.info('Sign in to edit videos.', {theme: 'colored'})
   //     }
   //   }
   // }, [loading])
@@ -25,9 +25,9 @@ function PrivateRoute() {
     return <Outlet />
   } else {
     if(location.pathname.includes('create')) {
-      toast.info('Must sign in to create videos.', {theme: 'colored'})
+      toast.info('Sign in to create videos.', {theme: 'colored'})
     } else {
-      toast.info('Must sign in to edit videos.', {theme: 'colored'})
+      toast.info('Sign in to edit videos.', {theme: 'colored'})
     }
     return <Navigate to='/' />
   }

@@ -113,6 +113,10 @@ function VideoPage() {
   }
 
   const likeVideo = async () => {
+    if(!user) {
+      toast.info('Sign in to like videos.', { theme: 'colored'});
+      return;
+    }
     let disliked;
     // Remove dislike if video is disliked by user
     if(dislikes?.includes(user?.uid)) {
@@ -148,6 +152,10 @@ function VideoPage() {
   }
 
   const dislikeVideo = async () => {
+    if(!user) {
+      toast.info('Sign in to dislike videos.', { theme: 'colored'});
+      return;
+    }
     let liked;
     // Remove like if video is liked by user
     if(likes?.includes(user?.uid)) {
@@ -183,6 +191,10 @@ function VideoPage() {
   }
 
   const toggleSubscribe = async () => {
+    if(!user) {
+      toast.info('Sign in to subscribe.', { theme: 'colored'});
+      return;
+    }
     if(!subscribers?.includes(user?.uid)) {
       toast.success('Subscription added', {theme: 'colored'});
 

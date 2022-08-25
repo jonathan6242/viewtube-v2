@@ -2,6 +2,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { db } from "../firebase";
 import useAuthUser from "../hooks/useAuthUser";
 import CommentInput from "./CommentInput";
@@ -18,6 +19,10 @@ function Reply({ mobile, inputRefMobile, reply, comment, replies, setText }) {
   const dislikedByUser = dislikes?.includes(user?.uid)
 
   const likeReply = async () => {
+    if(!user) {
+      toast.info('Sign in to like replies.', { theme: 'colored' });
+      return;
+    }
     let disliked;
     // Remove dislike if reply is disliked by user
     if(dislikes?.includes(user?.uid)) {
@@ -53,6 +58,10 @@ function Reply({ mobile, inputRefMobile, reply, comment, replies, setText }) {
   }
 
   const dislikeReply = async () => {
+    if(!user) {
+      toast.info('Sign in to dislike replies.', { theme: 'colored' });
+      return;
+    }
     let liked;
     // Remove like if reply is liked by user
     if(likes?.includes(user?.uid)) {

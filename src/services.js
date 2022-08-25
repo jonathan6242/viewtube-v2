@@ -1,5 +1,6 @@
 import { signInWithPopup, signOut } from "firebase/auth"
 import { doc, getDoc, setDoc } from "firebase/firestore"
+import { toast } from "react-toastify"
 import { auth, db, provider } from "./firebase"
 
 export const signin = async () => {
@@ -17,15 +18,16 @@ export const signin = async () => {
       subscriptions: [],
       notifications: []
     })
+    toast.success('Successfully signed up.', { theme: 'colored' })
   } else {
     // If user is already in database (existing account)
-    
+    toast.success('Successfully signed in.', { theme: 'colored' })
   }
 }
 
 export const signout = async () => {
-  console.log('signout')
   await signOut(auth)
+  toast.success('Successfully signed out.', { theme: 'colored' })
 }
 
 export const getUserByUID = async (uid) => {

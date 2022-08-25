@@ -67,6 +67,10 @@ function ChannelPage() {
   }, [])
 
   const toggleSubscribe = async () => {
+    if(!user) {
+      toast.info('Sign in to subscribe.', { theme: 'colored' });
+      return;
+    }
     if(!subscribers?.includes(user?.uid)) {
       toast.success('Subscription added', {theme: 'colored'});
 
