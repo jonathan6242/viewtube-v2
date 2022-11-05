@@ -1,6 +1,6 @@
 # ViewTube
 
-![alt text](https://www.jonathanfwong.com/assets/viewtube2.PNG "ViewTube")
+![ViewTube](https://www.jonathanfwong.com/assets/viewtube2.PNG "ViewTube")
 
 ## About
 ViewTube is a social media CRUD application based on YouTube.
