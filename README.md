@@ -18,8 +18,8 @@ https://viewtube-v2.vercel.app/
 * Channel pages
 * Viewing liked videos and subscriptions
 * Notifications
-* Mobile responsive
 * Light and dark mode
+* Mobile responsive
 
 ## Stack
 * React
