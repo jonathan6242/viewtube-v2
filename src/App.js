@@ -55,13 +55,10 @@ function App() {
         setTheme("light")
       }
     } else {
-      if(document.documentElement.classList.contains('dark')) {
-        localStorage.setItem("theme", "dark")
-        setTheme("dark")
-      } else {
-        localStorage.setItem("theme", "light")
-        setTheme("light")
-      }
+      // Set default mode to dark
+      document.documentElement.classList.add('dark')
+      localStorage.setItem("theme", "dark")
+      setTheme("dark")
     }
     window.addEventListener('keydown', function(e) {
       if(e.keyCode == 32 && e.target == document.body) {
