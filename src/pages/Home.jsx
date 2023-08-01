@@ -27,7 +27,7 @@ function Home({ popupOpen, setPopupOpen }) {
   );
 
   return (
-  <div className="flex-1 overflow-y-scroll py-6 sm:px-6 main-container">
+  <div className="flex-1 overflow-y-scroll scrollbar-hide py-6 sm:px-6 main-container">
     {
       !user && !loading && popupOpen && (
         <div className="bg-blue-400 mb-6 p-6 font-semibold flex flex-col md:flex-row space-y-1 md:space-y-0 justify-center relative md:rounded-lg text-white">

@@ -120,7 +120,7 @@ function CreateVideo() {
   return (
     <form
       className="p-3 py-5 md:p-12 md:py-8 pb-20 flex-1 flex flex-col
-      overflow-y-scroll main-container"
+      overflow-y-scroll scrollbar-hide main-container"
       onSubmit={onSubmit}
     >
       <div className="text-2xl font-semibold mb-6">Create Video</div>

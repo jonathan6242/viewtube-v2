@@ -35,7 +35,7 @@ function LikedVideos() {
   }, [user, loading])
 
   return (
-    <div className="flex-1 overflow-y-scroll py-6 sm:px-6 main-container">
+    <div className="flex-1 overflow-y-scroll scrollbar-hide py-6 sm:px-6 main-container">
       {
         user && !loading && (
           <>

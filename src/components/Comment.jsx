@@ -299,7 +299,7 @@ function Comment({ mobile, comment }) {
                   </span>
                 </div>
                 <div 
-                  className="flex-1 p-3 overflow-y-scroll flex flex-col overflow-x-hidden"
+                  className="flex-1 p-3 overflow-y-scroll scrollbar-hide flex flex-col overflow-x-hidden"
                   ref={scrollRef}
                 >
                   <div className="pb-3 border-b">

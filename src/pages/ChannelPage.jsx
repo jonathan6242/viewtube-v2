@@ -116,7 +116,7 @@ function ChannelPage() {
   }
 
   return (
-    <div className="flex-1 overflow-y-scroll main-container flex flex-col">
+    <div className="flex-1 overflow-y-scroll scrollbar-hide main-container flex flex-col">
       {/* Top Header */}
       <div className="px-4 md:px-8 py-6 border-b">   
         <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center max-w-7xl mx-auto">

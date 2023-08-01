@@ -615,7 +615,7 @@ function VideoPage() {
             close
           </span>
         </div>
-        <div className="flex-1 p-3 overflow-y-scroll">
+        <div className="flex-1 p-3 overflow-y-scroll scrollbar-hide">
           <div className="text-xl font-semibold">{video?.title}</div>
           <div className="py-2 pb-3 flex border-b">
             <div className="flex-1 flex flex-col items-center">
@@ -660,7 +660,7 @@ function VideoPage() {
             close
           </span>
         </div>
-        <div className="flex-1 p-3 overflow-y-scroll">
+        <div className="flex-1 p-3 overflow-y-scroll scrollbar-hide">
           <div className="pb-3 border-b">
             <CommentInput 
               mobile

@@ -86,7 +86,7 @@ function Notifications({ signedIn = true, notifications, setNotifications }) {
               }
 
             </div>
-            <div className="flex flex-col h-[500px] overflow-y-scroll">
+            <div className="flex flex-col h-[500px] overflow-y-scroll scrollbar-hide">
               {
                 notifications?.map((notification, index) => (
                   <Notification

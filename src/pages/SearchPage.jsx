@@ -46,7 +46,7 @@ function SearchPage() {
   }, [])
 
   return (
-    <div className="flex-1 overflow-y-scroll main-container flex flex-col md:px-8">
+    <div className="flex-1 overflow-y-scroll scrollbar-hide main-container flex flex-col md:px-8">
         <div className="flex items-center justify-between pt-6 px-4 md:px-0 max-w-5xl mx-auto w-full">
           <div className="font-semibold text-lg">
             Results for "{term}"
