@@ -284,7 +284,7 @@ function Video({ src }) {
             pause
           </span>
         </button>
-        <div className={`video-controls-container absolute inset-x-0 bottom-0
+        <div className={`video-controls-container absolute inset-x-0 bottom-[-1px]
         md:mx-2 z-40 ${playing ? 'opacity-0' : 'md:opacity-100'} group-hover:opacity-100 group-focus-within:opacity-100
         flex flex-col-reverse md:flex-col
         ${loading ? 'invisible' : 'visible'}`}
