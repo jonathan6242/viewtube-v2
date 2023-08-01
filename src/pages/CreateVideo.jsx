@@ -187,10 +187,7 @@ function CreateVideo() {
       >
         {
           loading ? (
-            <img
-              className="w-6 h-6"
-              src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
-            ></img>
+            <i className="fas fa-spinner text-2xl animate-spin-fast"></i>
           ) 
           : <span>Create video</span>
         }

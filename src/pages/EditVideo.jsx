@@ -215,10 +215,7 @@ function EditVideo() {
       >
         {
           loading ? (
-            <img
-              className="w-6 h-6"
-              src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
-            ></img>
+            <i className="fas fa-spinner text-2xl animate-spin-fast"></i>
           ) 
           : <span>Edit video</span>
         }
@@ -242,10 +239,7 @@ function EditVideo() {
       >
         {
           loading ? (
-            <img
-              className="w-6 h-6"
-              src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
-            ></img>
+            <i className="fas fa-spinner text-2xl animate-spin-fast"></i>
           ) 
           : <span>Delete video</span>
         }

@@ -562,10 +562,7 @@ function VideoPage() {
                 </div>
               ) : (
                 <div className="flex items-center justify-center pt-10">
-                  <img
-                    className="w-10 h-10"
-                    src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif"
-                  ></img>
+                  <i className="fas fa-spinner text-4xl animate-spin-fast"></i>
                 </div>
 
               )

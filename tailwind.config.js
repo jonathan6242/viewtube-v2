@@ -13,7 +13,10 @@ module.exports = {
       },
       maxWidth: {
         'screen-3xl': '1700px'
-      }
+      },
+      animation: {
+        'spin-fast': 'spin 0.75s linear infinite'
+      },
     },
     screens: {
       'xs': '585px',
