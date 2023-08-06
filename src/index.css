@@ -15,7 +15,7 @@ body {
 
 .hover-label {
   @apply absolute bg-black/50 dark:bg-gray-400/80 p-2 text-white text-xs rounded
-  left-1/2 -translate-x-[50%] -bottom-12 opacity-0 
+  left-1/2 -translate-x-[50%] -bottom-12 opacity-0 z-10
   group-hover:opacity-100 duration-100 hidden md:flex
 }
 
