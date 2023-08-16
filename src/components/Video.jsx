@@ -12,7 +12,7 @@ function Video({ src }) {
   const [previewPosition, setPreviewPosition] = useState(0);
   const [controlsOpen, setControlsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [videoHeight, setVideoHeight] = useState(0);
+  const [videoHeight, setVideoHeight] = useState(videoContainerRef?.current?.clientHeight);
 
   let scrubbing;
   let wasPaused;
@@ -228,7 +228,6 @@ function Video({ src }) {
 
   const changeVideoHeight = (e) => {
     setVideoHeight(videoContainerRef?.current?.clientHeight)
-    alert(123)
   }
 
   useEffect(() => {
