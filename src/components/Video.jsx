@@ -16,9 +16,11 @@ function Video({ src }) {
   let wasPaused;
 
   const videoRef = useRef()
+  const mobileVideoRef = useRef();
   const volumeSliderRef = useRef();
   const speedBtnRef = useRef();
   const timelineContainerRef = useRef();
+  
 
   // Handle all key inputs
   const handleKeyDown = (e) => {
@@ -194,6 +196,11 @@ function Video({ src }) {
     return check;
   };
 
+  function updateMobileVideo() {
+    mobileVideoRef.current.style.width = '100%';
+    alert(123)
+  }
+
   // Hide controls on blur (mobile)
   const hideControlsOnBlur = (e) => {
     if(!videoContainerRef?.current?.contains(e.target)) {
@@ -204,6 +211,9 @@ function Video({ src }) {
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('touchstart', hideControlsOnBlur)
+    if(window.screen?.orientation) {
+      window.screen?.orientation.addEventListener("change", updateMobileVideo)
+    }
 
     // Toggle scrubbing
     timelineContainerRef?.current?.addEventListener('mousedown', toggleScrubbing)
@@ -242,13 +252,14 @@ function Video({ src }) {
 
       document.removeEventListener("mousemove", handleTimelineUpdateIfScrubbing)
       document.removeEventListener("touchmove", handleTimelineUpdateIfScrubbing)
+      window.screen?.orientation.removeEventListener("change", updateMobileVideo)
     }
   }, [])
 
   if(window.mobileCheck()) {
     return (
       <>
-      <video src={src} controls></video>
+        <video style={{width: '100%'}} ref={mobileVideoRef} src={src} controls></video>
       </>
     )
   }
