@@ -215,7 +215,6 @@ function Video({ src }) {
     // const mobileVideo = document.getElementById('video');
     // console.log(mobileVideo)
     // mobileVideo.innerHTML = '';
-    alert(123);
     window.location.reload();
   }
 
@@ -307,11 +306,18 @@ function Video({ src }) {
     };
   }, []);
 
-  if (window.mobileCheck()) {
-    return (
-      <video style={{width: '100%'}} src={src} controls></video>
-    );
-  }
+  // if (window.mobileCheck()) {
+  //   return (
+  //     <div className="relative aspect-[16/9] video-container flex bg-cover bg-center bg-no-repeat bg-black group">
+  //       <video
+  //         className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full"
+  //         src={src}
+  //         controls
+  //         draggable={false}
+  //       ></video>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
