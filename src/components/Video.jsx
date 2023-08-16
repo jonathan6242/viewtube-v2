@@ -212,12 +212,11 @@ function Video({ src }) {
   };
 
   function updateMobileVideo() {
-    const mobileVideo = document.getElementById('video');
-    console.log(mobileVideo)
-    mobileVideo.innerHTML = '';
+    // const mobileVideo = document.getElementById('video');
+    // console.log(mobileVideo)
+    // mobileVideo.innerHTML = '';
     alert(123);
     window.location.reload();
-    mobileVideo.innerHTML = `<video style="width: 100%" src=${src} controls></video>`
   }
 
   // Hide controls on blur (mobile)
@@ -308,18 +307,18 @@ function Video({ src }) {
     };
   }, []);
 
-  if (window.mobileCheck()) {
-    return (
-      <div
-        className={`relative aspect-[16/9] video-container flex bg-cover bg-center bg-no-repeat bg-black group "
-        }`}
-        draggable={false}
-        id="video"
-      >
-        <video style={{width: '100%'}} src={src} controls></video>
-      </div>
-    );
-  }
+  // if (window.mobileCheck()) {
+  //   return (
+  //     <div
+  //       className={`relative aspect-[16/9] video-container flex bg-cover bg-center bg-no-repeat bg-black group "
+  //       }`}
+  //       draggable={false}
+  //       id="video"
+  //     >
+  //       <video style={{width: '100%'}} src={src} controls></video>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
