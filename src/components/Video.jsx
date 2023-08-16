@@ -259,7 +259,7 @@ function Video({ src }) {
   if(window.mobileCheck()) {
     return (
       <>
-        <video style={{width: '100%'}} ref={mobileVideoRef} src={src} controls></video>
+        <video ref={mobileVideoRef} src={src} controls></video>
       </>
     )
   }
