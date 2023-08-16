@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import VideoPageContext from "../context/VideoPageContext";
 
 function Video({ src }) {
-  const { videoRef: videoContainerRef } =
+  const { videoRef: videoContainerRef, setVideoHeight } =
     useContext(VideoPageContext);
   const [playing, setPlaying] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
@@ -12,8 +12,8 @@ function Video({ src }) {
   const [previewPosition, setPreviewPosition] = useState(0);
   const [controlsOpen, setControlsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [videoHeight, setVideoHeight] = useState(videoContainerRef?.current?.clientHeight);
-  const [videoWidth, setVideoWidth] = useState(videoContainerRef?.current?.clientWidth);
+  const [videoContainerHeight, setVideoContainerHeight] = useState(videoContainerRef?.current?.clientHeight);
+  const [videoContainerWidth, setVideoContainerWidth] = useState(videoContainerRef?.current?.clientWidth);
 
   let scrubbing;
   let wasPaused;
@@ -221,8 +221,9 @@ function Video({ src }) {
   };
 
   const changeVideoSize = (e) => {
+    setVideoContainerHeight(videoContainerRef?.current?.clientHeight)
+    setVideoContainerWidth(videoContainerRef?.current?.clientWidth)
     setVideoHeight(videoContainerRef?.current?.clientHeight)
-    setVideoWidth(videoContainerRef?.current?.clientWidth)
   }
 
   useEffect(() => {
@@ -310,7 +311,7 @@ function Video({ src }) {
             : "video-container flex bg-cover bg-center bg-no-repeat bg-black group max-w-[100vw]"
         }`}
         style={{
-          height: `${(9 / 16) * videoWidth}px`
+          height: `${(9 / 16) * videoContainerWidth}px`
         }}
         ref={videoContainerRef}
         draggable={false}
@@ -320,8 +321,8 @@ function Video({ src }) {
           src={src}
           controls
           style={{
-            height: `${(9 / 16) * videoWidth}px`,
-            width: `${videoWidth}px`
+            height: `${(9 / 16) * videoContainerWidth}px`,
+            width: `${videoContainerWidth}px`
           }}
           preload="metadata"
           onLoadedMetadata={() => {
@@ -604,8 +605,8 @@ function Video({ src }) {
         <video
           className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2`}
           style={{
-            height: `${videoHeight}px`,
-            width: `${videoWidth}px`
+            height: `${videoContainerHeight}px`,
+            width: `${videoContainerWidth}px`
           }}
           src={src}
           ref={videoRef}
