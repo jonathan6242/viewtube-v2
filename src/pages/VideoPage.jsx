@@ -254,7 +254,7 @@ function VideoPage() {
     >
       <div className="flex w-full max-w-screen-3xl mx-auto md:p-6 space-x-6">
         {/* Video, description & comments */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-y-scroll scrollbar-hide">
           {/* Custom video player */}
           {
             video?.video ? (
