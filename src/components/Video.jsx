@@ -13,6 +13,7 @@ function Video({ src }) {
   const [controlsOpen, setControlsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [videoHeight, setVideoHeight] = useState(videoContainerRef?.current?.clientHeight);
+  const [videoWidth, setVideoWidth] = useState(videoContainerRef?.current?.clientWidth);
 
   let scrubbing;
   let wasPaused;
@@ -212,13 +213,6 @@ function Video({ src }) {
     return check;
   };
 
-  function updateMobileVideo() {
-    // const mobileVideo = document.getElementById('video');
-    // console.log(mobileVideo)
-    // mobileVideo.innerHTML = '';
-    // window.location.reload();
-  }
-
   // Hide controls on blur (mobile)
   const hideControlsOnBlur = (e) => {
     if (!videoContainerRef?.current?.contains(e.target)) {
@@ -226,14 +220,15 @@ function Video({ src }) {
     }
   };
 
-  const changeVideoHeight = (e) => {
+  const changeVideoSize = (e) => {
     setVideoHeight(videoContainerRef?.current?.clientHeight)
+    setVideoWidth(videoContainerRef?.current?.clientWidth)
   }
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("touchstart", hideControlsOnBlur);
-    window.addEventListener("resize", changeVideoHeight)
+    window.addEventListener("resize", changeVideoSize)
     if (window.screen?.orientation) {
       window.screen?.orientation.addEventListener("change", updateMobileVideo);
     }
@@ -329,6 +324,7 @@ function Video({ src }) {
           controls
           style={{
             height: `${videoHeight}px`,
+            width: `${videoWidth}px`
           }}
           preload="metadata"
           onLoadedMetadata={() => {
@@ -612,6 +608,7 @@ function Video({ src }) {
           className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2`}
           style={{
             height: `${videoHeight}px`,
+            width: `${videoWidth}px`
           }}
           src={src}
           ref={videoRef}
