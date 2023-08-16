@@ -223,6 +223,7 @@ function Video({ src }) {
   const changeVideoSize = (e) => {
     setVideoHeight(videoContainerRef?.current?.clientHeight)
     setVideoWidth(videoContainerRef?.current?.clientWidth)
+    alert(123)
   }
 
   useEffect(() => {
@@ -304,7 +305,7 @@ function Video({ src }) {
   if (window.mobileCheck()) {
     return (
       <div
-        className={`relative aspect-[16/9] ${
+        className={`relative pb-[56.25%] ${
           loading
             ? "animated-bg"
             : "video-container flex bg-cover bg-center bg-no-repeat bg-black group "
@@ -333,7 +334,7 @@ function Video({ src }) {
   return (
     <>
       <div
-        className={`relative aspect-[16/9] ${
+        className={`relative pb-[56.25%] ${
           loading
             ? "animated-bg"
             : "video-container flex bg-cover bg-center bg-no-repeat bg-black group "
