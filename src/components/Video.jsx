@@ -307,18 +307,11 @@ function Video({ src }) {
     };
   }, []);
 
-  // if (window.mobileCheck()) {
-  //   return (
-  //     <div
-  //       className={`relative aspect-[16/9] video-container flex bg-cover bg-center bg-no-repeat bg-black group "
-  //       }`}
-  //       draggable={false}
-  //       id="video"
-  //     >
-  //       <video style={{width: '100%'}} src={src} controls></video>
-  //     </div>
-  //   );
-  // }
+  if (window.mobileCheck()) {
+    return (
+      <video style={{width: '100%'}} src={src} controls></video>
+    );
+  }
 
   return (
     <>
@@ -617,14 +610,8 @@ function Video({ src }) {
           }}
           preload="metadata"
           onLoadedMetadata={() => {
-            const video = videoRef?.current;
             setLoading(false);
           }}
-          // onLoadedData={() => {
-          //   const video = videoRef?.current
-          //   setLoading(false);
-
-          // }}
           draggable={false}
         ></video>
       </div>
