@@ -310,7 +310,7 @@ function Video({ src }) {
             : "video-container flex bg-cover bg-center bg-no-repeat bg-black group max-w-[100vw]"
         }`}
         style={{
-          height: (9 / 16) * videoWidth
+          height: `${(9 / 16) * videoWidth}px`
         }}
         ref={videoContainerRef}
         draggable={false}
@@ -320,7 +320,7 @@ function Video({ src }) {
           src={src}
           controls
           style={{
-            height: `${videoHeight}px`,
+            height: `${(9 / 16) * videoWidth}px`,
             width: `${videoWidth}px`
           }}
           preload="metadata"
