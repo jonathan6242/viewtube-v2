@@ -223,8 +223,12 @@ function Video({ src }) {
   const changeVideoSize = (e) => {
     setVideoContainerHeight(videoContainerRef?.current?.clientHeight)
     setVideoContainerWidth(videoContainerRef?.current?.clientWidth)
-    setVideoHeight(videoContainerRef?.current?.clientHeight)
+    setVideoHeight(videoContainerHeight)
   }
+
+  useEffect(() => {
+    setVideoHeight(videoContainerHeight)
+  }, [videoContainerHeight])
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
