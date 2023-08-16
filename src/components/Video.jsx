@@ -297,7 +297,7 @@ function Video({ src }) {
         "touchmove",
         handleTimelineUpdateIfScrubbing
       );
-
+      window.removeEventListener("resize", changeVideoSize)
     };
   }, []);
 
