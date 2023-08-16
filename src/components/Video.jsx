@@ -229,9 +229,6 @@ function Video({ src }) {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("touchstart", hideControlsOnBlur);
     window.addEventListener("resize", changeVideoSize)
-    if (window.screen?.orientation) {
-      window.screen?.orientation.addEventListener("change", updateMobileVideo);
-    }
 
     // Toggle scrubbing
     timelineContainerRef?.current?.addEventListener(
@@ -300,10 +297,7 @@ function Video({ src }) {
         "touchmove",
         handleTimelineUpdateIfScrubbing
       );
-      window.screen?.orientation.removeEventListener(
-        "change",
-        updateMobileVideo
-      );
+
     };
   }, []);
 
