@@ -308,7 +308,7 @@ function Video({ src }) {
         className={`relative pb-[56.25%] ${
           loading
             ? "animated-bg"
-            : "video-container flex bg-cover bg-center bg-no-repeat bg-black group "
+            : "video-container flex bg-cover bg-center bg-no-repeat bg-black group max-w-[100vw]"
         }`}
         ref={videoContainerRef}
         draggable={false}
