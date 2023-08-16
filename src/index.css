@@ -8,6 +8,24 @@ body {
   overflow: hidden;
 }
 
+.video-container {
+  aspect-ratio: 16/9 !important;
+  
+  @supports not (aspect-ratio: 16 / 9) {
+  &::before {
+    float: left;
+    padding-top: 56.25%;
+    content: "";
+  }
+
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+}
+
 
 * {
   font-family: 'Poppins', 'sans-serif';

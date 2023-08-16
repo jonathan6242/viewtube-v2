@@ -223,7 +223,6 @@ function Video({ src }) {
   const changeVideoSize = (e) => {
     setVideoHeight(videoContainerRef?.current?.clientHeight)
     setVideoWidth(videoContainerRef?.current?.clientWidth)
-    alert(123)
   }
 
   useEffect(() => {
@@ -310,6 +309,9 @@ function Video({ src }) {
             ? "animated-bg"
             : "video-container flex bg-cover bg-center bg-no-repeat bg-black group max-w-[100vw]"
         }`}
+        style={{
+          width: (16 / 9) * videoContainerRef?.current?.clientHeight | 0
+        }}
         ref={videoContainerRef}
         draggable={false}
       >
