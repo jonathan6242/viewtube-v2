@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import VideoPageContext from "../context/VideoPageContext";
 
 function Video({ src }) {
-  const { videoRef: videoContainerRef, setVideoHeight } =
+  const { videoRef: videoContainerRef } =
     useContext(VideoPageContext);
   const [playing, setPlaying] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
@@ -12,6 +12,7 @@ function Video({ src }) {
   const [previewPosition, setPreviewPosition] = useState(0);
   const [controlsOpen, setControlsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [videoHeight, setVideoHeight] = useState(0);
 
   let scrubbing;
   let wasPaused;
@@ -225,9 +226,15 @@ function Video({ src }) {
     }
   };
 
+  const changeVideoHeight = (e) => {
+    setVideoHeight(videoContainerRef?.current?.clientHeight)
+    alert(123)
+  }
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("touchstart", hideControlsOnBlur);
+    window.addEventListener("resize", changeVideoHeight)
     if (window.screen?.orientation) {
       window.screen?.orientation.addEventListener("change", updateMobileVideo);
     }
@@ -322,7 +329,7 @@ function Video({ src }) {
           src={src}
           controls
           style={{
-            height: `${videoContainerRef?.current?.clientHeight}px`,
+            height: `${videoHeight}px`,
           }}
           preload="metadata"
           onLoadedMetadata={() => {
@@ -605,7 +612,7 @@ function Video({ src }) {
         <video
           className={`absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2`}
           style={{
-            height: `${videoContainerRef?.current?.clientHeight}px`,
+            height: `${videoHeight}px`,
           }}
           src={src}
           ref={videoRef}
