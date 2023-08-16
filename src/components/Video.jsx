@@ -310,7 +310,7 @@ function Video({ src }) {
             : "video-container flex bg-cover bg-center bg-no-repeat bg-black group max-w-[100vw]"
         }`}
         style={{
-          width: (16 / 9) * videoHeight
+          height: (9 / 16) * videoWidth
         }}
         ref={videoContainerRef}
         draggable={false}
