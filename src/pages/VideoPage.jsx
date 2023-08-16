@@ -29,6 +29,7 @@ function VideoPage() {
   const [subscribers, setSubscribers] = useState();
   const [comments, setComments] = useState(null);
   const [commentText, setCommentText] = useState('');
+  const [repliesCount, setRepliesCount] = useState('');
 
   const [infoLoading, setInfoLoading] = useState(true);
 
@@ -86,11 +87,15 @@ function VideoPage() {
     getVideo();
     return onSnapshot(
       collection(db, "videos", id, "comments"),
-      (snapshot) => {
+      async (snapshot) => {
         setComments(snapshot.docs
           .map(doc => ({...doc.data(), id: doc.id}))
           .sort((a, b) => b?.dateCreated - a?.dateCreated)
         );
+        const count = await Promise.all(snapshot.docs.map(async (doc) => {
+          return (await getDocs(collection(db, "videos", id, "comments", doc.id, "replies"))).docs.length;
+        }))
+        setRepliesCount(count.reduce((a, b) => a + b));
       }
     )
   }, [id])
@@ -500,7 +505,7 @@ function VideoPage() {
                     <div className="space-x-2">
                       <span>Comments</span>
                       <span>•</span>
-                      <span className="text-secondary">{comments?.length}</span> 
+                      <span className="text-secondary">{comments?.length + repliesCount}</span> 
                     </div>
                     <div className="flex flex-col items-center text-xs leading-none">
                       <span className="material-symbols-outlined">
@@ -544,7 +549,7 @@ function VideoPage() {
             {
               comments ? (
                 <div className="hidden md:flex flex-col pt-6">
-                  <div className="mb-6">{comments?.length} comments</div>
+                  <div className="mb-6">{comments?.length + repliesCount} comment{(comments?.length + repliesCount) != 1 ? 's' : ''}</div>
                     <CommentInput
                       text={commentText}
                       setText={setCommentText}
