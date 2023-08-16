@@ -216,6 +216,7 @@ function Video({ src }) {
     console.log(mobileVideo)
     mobileVideo.innerHTML = '';
     alert(123);
+    window.location.reload();
     mobileVideo.innerHTML = `<video style="width: 100%" src=${src} controls></video>`
   }
 
