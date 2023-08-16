@@ -215,7 +215,7 @@ function Video({ src }) {
     // const mobileVideo = document.getElementById('video');
     // console.log(mobileVideo)
     // mobileVideo.innerHTML = '';
-    window.location.reload();
+    // window.location.reload();
   }
 
   // Hide controls on blur (mobile)
@@ -306,18 +306,33 @@ function Video({ src }) {
     };
   }, []);
 
-  // if (window.mobileCheck()) {
-  //   return (
-  //     <div className="relative aspect-[16/9] video-container flex bg-cover bg-center bg-no-repeat bg-black group">
-  //       <video
-  //         className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full"
-  //         src={src}
-  //         controls
-  //         draggable={false}
-  //       ></video>
-  //     </div>
-  //   );
-  // }
+  if (window.mobileCheck()) {
+    return (
+      <div
+        className={`relative aspect-[16/9] ${
+          loading
+            ? "animated-bg"
+            : "video-container flex bg-cover bg-center bg-no-repeat bg-black group "
+        }`}
+        ref={videoContainerRef}
+        draggable={false}
+      >
+        <video
+          className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full"
+          src={src}
+          controls
+          style={{
+            height: `${videoContainerRef?.current?.clientHeight}px`,
+          }}
+          preload="metadata"
+          onLoadedMetadata={() => {
+            setLoading(false);
+          }}
+          draggable={false}
+        ></video>
+      </div>
+    );
+  }
 
   return (
     <>

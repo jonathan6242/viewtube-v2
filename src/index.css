@@ -8,9 +8,6 @@ body {
   overflow: hidden;
 }
 
-::-webkit-media-controls {
-  display:none !important;
-}
 
 * {
   font-family: 'Poppins', 'sans-serif';
