@@ -211,8 +211,9 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
                       >
                         Cancel
                       </button>
+                      
                       <button
-                        className="py-[10px] px-5 rounded bg-gray-100 dark:bg-dark2 text-secondary uppercase"
+                        className={`py-[10px] px-5 rounded uppercase ${text.length ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-dark2 text-secondary'}`}
                       >
                         <span>{reply ? 'Reply' : 'Comment'}</span> 
                       </button>
@@ -279,7 +280,7 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
                     Cancel
                   </button>
                   <button 
-                    className="py-[10px] px-5 rounded bg-gray-100 dark:bg-dark2 text-secondary uppercase"
+                    className={`py-[10px] px-5 rounded uppercase ${text.length ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-dark2 text-secondary'}`}
                   >
                     Reply
                   </button>
@@ -317,7 +318,7 @@ function CommentInput({ reply, setReplyInputOpen, mobile, inputRefMobile,
         <div className="flex-1">
           <input 
             type="text"
-            className={`w-full bg-transparent placeholder:text-secondary outline-none transition duration-200 pl-2 py-2 pr-0 border border-transparent bg-gray-100 dark:bg-dark2 rounded`}
+            className={`w-full placeholder:text-secondary outline-none transition duration-200 pl-2 py-2 pr-0 border border-transparent bg-gray-100 dark:bg-dark2 rounded`}
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder={`Add a ${reply ? 'reply' : 'comment'}...`}
